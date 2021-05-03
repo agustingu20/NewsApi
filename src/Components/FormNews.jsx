@@ -9,20 +9,25 @@ export default function FormNews() {
   const [country, setCountry] = useState("ar");
 
   useEffect(() => {
-    getNews();
-  }, [category]);
+    const getNews = async () => {
+      const response = await axios.get(
+        `https://newsapi.org/v2/top-headlines?apiKey=2db011ee4bb24f57949ebb5e5f6eefb0&category=${category}&country=${country}`
+      );
+      setArticles(response.data.articles);
+    };
 
-  const getNews = async () => {
-    const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?apiKey=2db011ee4bb24f57949ebb5e5f6eefb0&category=${category}&country=${country}`
-    );
-    setArticles(response.data.articles);
-  };
+    getNews();
+  }, [category, country]);
 
   const handleChange = (event) => {
     const { value } = event.target;
     setCategory(value);
     // setCountry(value);
+  };
+
+  const handleChange1 = (event) => {
+    const { value } = event.target;
+    setCountry(value);
   };
 
   return (
@@ -39,21 +44,21 @@ export default function FormNews() {
           onChange={handleChange}
         >
           <option>General</option>
-          <option>Entertainment</option>
-          <option>Health</option>
-          <option>Sports</option>
-          <option>Science</option>
+          <option value="entertainment">Entretenimiento</option>
+          <option value="health">Salud</option>
+          <option value="sports">Deportes</option>
+          <option value="science">Ciencia</option>
         </Form.Control>
-        {/* <Form.Label className="mt-1">Elija un país</Form.Label>
+        <Form.Label className="mt-1">Elija un país</Form.Label>
         <Form.Control
           className="mx-3"
           style={{ width: "300px" }}
           as="select"
-          onChange={handleChange}
+          onChange={handleChange1}
         >
-          <option>ar</option>
-          <option>us</option>
-        </Form.Control> */}
+          <option value="ar">Argentina</option>
+          <option value="us">Estados Unidos</option>
+        </Form.Control>
       </Form.Group>
       <Form.Group>
         <div className="d-flex flex-wrap">
